@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Tutor Dashboard - Peer Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Welcome Hero & Overview -->
+        <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.2)); border-color: rgba(139, 92, 246, 0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h1 id="welcomeMsg" style="font-size: 2rem; margin-bottom: 0.25rem;">Welcome, Senior Tutor! 👋</h1>
+                    <p style="color: var(--text-secondary);">Manage your available study slots, view student bookings, and track student feedback.</p>
+                </div>
+                <a href="availability.html" class="btn btn-primary">Manage Availability Slots 📅</a>
+            </div>
+        </div>
+
+        <!-- Metrics Cards Grid -->
+        <div class="grid-3" style="margin-bottom: 2.5rem;">
+            <div class="card" style="text-align: center;">
+                <span style="font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase;">Average Rating</span>
+                <div id="tutorRatingDisplay" style="font-size: 2.5rem; font-weight: 700; color: #fbbf24; margin: 0.4rem 0;">- ★</div>
+                <span id="tutorReviewsCount" style="font-size: 0.85rem; color: var(--text-muted);">0 Reviews</span>
+            </div>
+            <div class="card" style="text-align: center;">
+                <span style="font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase;">Upcoming Sessions</span>
+                <div id="upcomingCount" style="font-size: 2.5rem; font-weight: 700; color: var(--accent); margin: 0.4rem 0;">0</div>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Scheduled Bookings</span>
+            </div>
+            <div class="card" style="text-align: center;">
+                <span style="font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase;">Total Sessions</span>
+                <div id="totalSessionsCount" style="font-size: 2.5rem; font-weight: 700; color: var(--success); margin: 0.4rem 0;">0</div>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">All-Time Mentored</span>
+            </div>
+        </div>
+
+        <!-- Upcoming Bookings Table -->
+        <div style="margin-bottom: 2.5rem;">
+            <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Upcoming Student Bookings</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Student Name</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Venue / Link</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="upcomingSessionsBody">
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading upcoming bookings...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Past Sessions Table -->
+        <div>
+            <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Completed Sessions History</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Student Name</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pastSessionsBody">
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading past sessions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadTutorDashboard);
+    </script>
+</body>
+</html>

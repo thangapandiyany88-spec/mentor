@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Peer-to-Peer Academic Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container" style="max-width: 540px; margin: 3rem auto;">
+        <div class="card">
+            <h2 style="font-size: 1.75rem; text-align: center; margin-bottom: 0.5rem;">Create an Account</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                Join as a Junior Student seeking guidance or a Senior Peer Tutor.
+            </p>
+
+            <div id="registerAlert" class="alert alert-danger" style="display: none;"></div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label class="form-label" for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" class="form-control" placeholder="e.g. Arun Kumar" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">College Mail ID *</label>
+                    <input type="email" id="email" class="form-control" placeholder="e.g. student@college.edu" required>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password *</label>
+                        <input type="password" id="password" class="form-control" placeholder="Min 6 chars" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirm Password *</label>
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Re-enter password" required>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="department">Department *</label>
+                        <select id="department" class="form-control" required>
+                            <option value="">Select Dept</option>
+                            <option value="CSE">CSE</option>
+                            <option value="IT">IT</option>
+                            <option value="ECE">ECE</option>
+                            <option value="EEE">EEE</option>
+                            <option value="MECH">MECH</option>
+                            <option value="CIVIL">CIVIL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="year">Academic Year *</label>
+                        <select id="year" class="form-control" required>
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="role">Register Role *</label>
+                    <select id="role" class="form-control" required>
+                        <option value="JUNIOR">Junior Student (Looking for Mentoring)</option>
+                        <option value="TUTOR">Senior Peer Tutor (Willing to Teach)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+                    Create Account
+                </button>
+
+                <p style="text-align: center; margin-top: 1.25rem; font-size: 0.9rem; color: var(--text-secondary);">
+                    Already have an account? <a href="login.html">Login here</a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        async function handleRegister(event) {
+            event.preventDefault();
+            const fullName = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const department = document.getElementById("department").value;
+            const year = parseInt(document.getElementById("year").value);
+            const role = document.getElementById("role").value;
+            const alertBox = document.getElementById("registerAlert");
+
+            if (!fullName || !email || !password || !department || !year || !role) {
+                showAlert("All fields marked with * are required.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert("Passwords do not match.");
+                return;
+            }
+
+            try {
+                const payload = { fullName, email, password, department, year, role };
+                const user = await apiRequest("/auth/register", "POST", payload);
+                setCurrentUser(user);
+                
+                if (user.role === "TUTOR") {
+                    window.location.href = "tutor-dashboard.html";
+                } else {
+                    window.location.href = "junior-dashboard.html";
+                }
+            } catch (error) {
+                showAlert(error.message);
+            }
+        }
+
+        function showAlert(msg) {
+            const alertBox = document.getElementById("registerAlert");
+            alertBox.innerText = msg;
+            alertBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>

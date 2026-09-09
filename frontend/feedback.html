@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Give Session Feedback - Peer Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container" style="max-width: 520px; margin: 3rem auto;">
+        <div class="card">
+            <h2 style="font-size: 1.75rem; text-align: center; margin-bottom: 0.5rem;">Session Feedback & Rating</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                How was your peer mentoring session?
+            </p>
+
+            <div id="feedbackAlert" style="display: none;"></div>
+
+            <div style="background: rgba(15, 23, 42, 0.6); padding: 1.25rem; border-radius: var(--radius-md); border: var(--glass-border); margin-bottom: 1.5rem;">
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">Mentored By</div>
+                <h3 id="tutorName" style="color: var(--text-primary); margin-bottom: 0.5rem;">Loading...</h3>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <span id="subjectName" class="subject-pill">Subject</span>
+                    <span id="sessionDate" style="font-size: 0.8rem; color: var(--text-secondary);">Date</span>
+                </div>
+            </div>
+
+            <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)">
+                <div class="form-group" style="text-align: center;">
+                    <label class="form-label">Rating (1 to 5 Stars) *</label>
+                    <div id="starRatingContainer" class="star-rating-input" style="justify-content: center;">
+                        <span>☆</span>
+                        <span>☆</span>
+                        <span>☆</span>
+                        <span>☆</span>
+                        <span>☆</span>
+                    </div>
+                    <div id="selectedRatingVal" style="font-weight: 700; color: #fbbf24; font-size: 0.95rem;">Select rating above</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="feedbackComment">Written Review / Feedback</label>
+                    <textarea id="feedbackComment" class="form-control" placeholder="Write your feedback regarding clear explanations, doubt resolution, patient teaching..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="feedbackSubmitBtn" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+                    Submit Feedback
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/tutors.js"></script>
+    <script src="js/feedback.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            initStarRating();
+            loadFeedbackPageData();
+        });
+    </script>
+</body>
+</html>

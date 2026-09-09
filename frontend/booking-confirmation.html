@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - Peer Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container" style="max-width: 580px; margin: 3rem auto;">
+        <div class="card" style="text-align: center; border-color: rgba(16, 185, 129, 0.4); background: radial-gradient(circle at top, rgba(16, 185, 129, 0.15), transparent 70%), var(--bg-card);">
+            
+            <div style="width: 70px; height: 70px; background: rgba(16, 185, 129, 0.2); color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.25rem; margin: 0 auto 1.25rem auto;">
+                ✓
+            </div>
+
+            <h1 style="font-size: 2rem; color: var(--success); margin-bottom: 0.5rem;">Booking Confirmed!</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Your 30-minute academic mentoring slot has been reserved successfully.</p>
+
+            <div style="background: rgba(15, 23, 42, 0.6); padding: 1.5rem; border-radius: var(--radius-md); border: var(--glass-border); text-align: left; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Booking ID:</span>
+                    <strong id="confBookingId" style="color: var(--accent);">BK10001</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Peer Tutor:</span>
+                    <strong id="confTutorName" style="color: var(--text-primary);">Dr. Arun Kumar</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Subject:</span>
+                    <span id="confSubjectName" class="subject-pill">Data Structures & Algorithms</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Date:</span>
+                    <strong id="confDate" style="color: var(--text-primary);">20 September 2026</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Time Slot:</span>
+                    <strong id="confTime" style="color: var(--text-primary);">10:00 AM – 10:30 AM</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Meeting Type:</span>
+                    <span id="confMeetingType" class="badge badge-info">LIBRARY</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                    <span style="color: var(--text-muted);">Venue Location:</span>
+                    <strong id="confVenue" style="color: var(--success);">Library Room 4</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Status:</span>
+                    <span id="confStatus" class="badge badge-success">CONFIRMED</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <a href="junior-dashboard.html" class="btn btn-secondary" style="flex: 1;">Go to Dashboard</a>
+                <a href="my-sessions.html" class="btn btn-primary" style="flex: 1;">View My Sessions</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const user = checkAuth("JUNIOR");
+            if (!user) return;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookingId = urlParams.get("id");
+            if (!bookingId) return;
+
+            try {
+                const bookings = await apiRequest(`/bookings/junior/${user.id}`);
+                const booking = bookings.find(b => b.id == bookingId);
+                if (booking) {
+                    document.getElementById("confBookingId").innerText = booking.bookingCode;
+                    document.getElementById("confTutorName").innerText = booking.tutorName;
+                    document.getElementById("confSubjectName").innerText = booking.subjectName;
+                    document.getElementById("confDate").innerText = booking.bookingDate;
+                    document.getElementById("confTime").innerText = `${booking.startTime} – ${booking.endTime}`;
+                    document.getElementById("confMeetingType").innerText = booking.meetingType;
+                    document.getElementById("confVenue").innerText = booking.meetingType === 'ONLINE' ? (booking.meetingLink || 'Online Link') : booking.venue;
+                    document.getElementById("confStatus").innerText = booking.status;
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        });
+    </script>
+</body>
+</html>

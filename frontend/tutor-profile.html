@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Profile - Peer Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="profileLoading" style="text-align: center; padding: 4rem;">Loading tutor profile...</div>
+
+        <div id="profileContainer" style="display: none;">
+            <!-- Profile Overview Header Card -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
+                    <div>
+                        <span class="badge badge-info" id="profDeptYear" style="margin-bottom: 0.5rem;">CSE - 3rd Year</span>
+                        <h1 id="profName" style="font-size: 2.25rem; margin-bottom: 0.5rem;">Dr. Arun Kumar</h1>
+                        <p style="color: var(--text-secondary);" id="profEmail">arun@college.edu</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="rating-stars" style="font-size: 1.5rem;" id="profStars">★★★★★</div>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: #fbbf24;" id="profRatingText">4.8 / 5.0</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);" id="profReviewsCount">12 Reviews</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: var(--border-color) 1px solid;" class="grid-2">
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--text-secondary);">Subjects Taught</h4>
+                        <div id="profSubjects" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 0.5rem; color: var(--text-secondary);">Academic Performance</h4>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent);" id="profCgpa">9.2 CGPA</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--text-secondary);">About Mentor</h4>
+                    <p id="profBio" style="color: var(--text-primary); line-height: 1.7;"></p>
+                </div>
+            </div>
+
+            <!-- Available Slots Card -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Available Study Slots</h3>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">Each slot is 30 minutes</span>
+                </div>
+
+                <div id="profileSlotsContainer" class="grid-3">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Reviews & Feedback Section -->
+            <div class="card">
+                <h3 style="margin-bottom: 1.5rem;">Student Feedback & Reviews</h3>
+                <div id="reviewsList">
+                    <p style="color: var(--text-muted);">Loading student reviews...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/tutors.js"></script>
+    <script src="js/booking.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadTutorProfilePage);
+
+        async function loadTutorProfilePage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tutorId = urlParams.get("id");
+            if (!tutorId) {
+                document.getElementById("profileLoading").innerText = "Tutor ID missing in URL.";
+                return;
+            }
+
+            try {
+                const tutor = await apiRequest(`/tutors/${tutorId}`);
+                document.getElementById("profileLoading").style.display = "none";
+                document.getElementById("profileContainer").style.display = "block";
+
+                document.getElementById("profName").innerText = tutor.fullName;
+                document.getElementById("profDeptYear").innerText = `${tutor.department} — ${tutor.year}${getOrdinal(tutor.year)} Year`;
+                document.getElementById("profEmail").innerText = tutor.email;
+                document.getElementById("profStars").innerHTML = renderStarRating(tutor.averageRating);
+                document.getElementById("profRatingText").innerText = tutor.averageRating > 0 ? `${tutor.averageRating.toFixed(1)} / 5.0` : "New Mentor";
+                document.getElementById("profReviewsCount").innerText = `${tutor.totalReviews} Reviews`;
+                document.getElementById("profCgpa").innerText = `${tutor.cgpa ? tutor.cgpa.toFixed(1) : '8.0'} CGPA`;
+                document.getElementById("profBio").innerText = tutor.bio || "No detailed bio provided yet.";
+
+                const subjContainer = document.getElementById("profSubjects");
+                subjContainer.innerHTML = (tutor.subjects || []).map(s => `<span class="subject-pill">${s.subjectName} (${s.subjectCode})</span>`).join(" ");
+
+                await loadTutorSlotsUI(tutor.id, tutor.fullName);
+                await loadTutorFeedbackUI(tutor.id);
+            } catch (error) {
+                document.getElementById("profileLoading").innerText = `Failed to load profile: ${error.message}`;
+            }
+        }
+
+        async function loadTutorSlotsUI(tutorId, tutorName) {
+            const slotsContainer = document.getElementById("profileSlotsContainer");
+            try {
+                const slots = await apiRequest(`/availability/tutor/${tutorId}/available`);
+                if (!slots || slots.length === 0) {
+                    slotsContainer.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted);">No open availability slots currently listed by this tutor.</p>`;
+                    return;
+                }
+
+                slotsContainer.innerHTML = slots.map(slot => `
+                    <div style="background: rgba(15, 23, 42, 0.6); padding: 1.25rem; border-radius: var(--radius-md); border: var(--glass-border); display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.25rem;">📅 ${slot.slotDate}</div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+                                ${formatTime(slot.startTime)} – ${formatTime(slot.endTime)}
+                            </div>
+                            <div style="margin-bottom: 1rem;"><span class="subject-pill">${slot.subject ? slot.subject.subjectName : 'General'}</span></div>
+                        </div>
+                        <button onclick="openBookingModal(${tutorId}, '${tutorName.replace(/'/g, "\\'")}')" class="btn btn-primary btn-sm" style="width: 100%;">
+                            Book Slot
+                        </button>
+                    </div>
+                `).join("");
+            } catch (e) {
+                slotsContainer.innerHTML = `<p class="text-danger">Failed to load slots.</p>`;
+            }
+        }
+
+        async function loadTutorFeedbackUI(tutorId) {
+            const list = document.getElementById("reviewsList");
+            try {
+                const reviews = await apiRequest(`/feedback/tutor/${tutorId}`);
+                if (!reviews || reviews.length === 0) {
+                    list.innerHTML = `<p style="color: var(--text-muted);">No student feedback reviews posted yet.</p>`;
+                    return;
+                }
+
+                list.innerHTML = reviews.map(r => `
+                    <div style="padding: 1rem 0; border-bottom: var(--border-color) 1px solid;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                            <strong style="color: var(--text-primary);">${r.juniorName}</strong>
+                            <div class="rating-stars" style="font-size: 0.9rem;">${renderStarRating(r.rating)}</div>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.25rem;">${r.comment || 'No comment provided.'}</p>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">Course: ${r.subjectName}</span>
+                    </div>
+                `).join("");
+            } catch (e) {
+                list.innerHTML = `<p style="color: var(--text-muted);">Failed to load reviews.</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Sessions - Peer Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">My Mentoring Sessions</h1>
+            <p style="color: var(--text-secondary);">View upcoming 30-minute appointments, venue locations, and completed session ratings.</p>
+        </div>
+
+        <!-- Upcoming Sessions Table -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <h3 style="margin-bottom: 1.25rem;">Upcoming Sessions</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Booking Code</th>
+                            <th>Participant</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Venue / Meeting Link</th>
+                            <th>Status / Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="upcomingSessionsBody">
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading upcoming sessions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Past Completed Sessions Table -->
+        <div class="card">
+            <h3 style="margin-bottom: 1.25rem;">Previous Sessions & History</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Booking Code</th>
+                            <th>Participant</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pastSessionsBody">
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading previous sessions...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadMySessionsPage);
+    </script>
+</body>
+</html>

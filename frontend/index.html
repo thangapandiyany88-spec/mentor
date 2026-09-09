@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer-to-Peer Academic Mentoring Hub</title>
+    <meta name="description"
+        content="Connect with experienced senior students for personalized academic mentoring and doubt clearing in Data Structures, DBMS, Math, and Java.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <!-- Populated dynamically by auth.js -->
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="container">
+        <section class="hero-section"
+            style="padding: 4rem 2rem; text-align: center; background: var(--bg-card); border-radius: var(--radius-lg); border: var(--glass-border); margin-bottom: 3rem; box-shadow: var(--shadow-md);">
+            <span class="badge badge-info" style="margin-bottom: 1.25rem;">Academic Excellence Through Peer
+                Mentoring</span>
+            <h1
+                style="font-size: 3rem; line-height: 1.2; margin-bottom: 1.25rem; background: linear-gradient(135deg, #fff, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                Learn Together. Grow Together.
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-secondary); max-width: 680px; margin: 0 auto 2rem auto;">
+                Connect with top-performing senior students for personalized 30-minute study sessions, doubt resolution
+                in DSA, DBMS, Mathematics, and Java programming.
+            </p>
+            <div class="hero-buttons" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="tutors.html" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1.05rem;">Find a
+                    Peer Tutor 🔍</a>
+                <a href="register.html" class="btn btn-secondary"
+                    style="padding: 0.85rem 2rem; font-size: 1.05rem;">Become a Tutor 🎓</a>
+            </div>
+        </section>
+
+        <!-- Key Features Section -->
+        <section style="margin-bottom: 3rem;">
+            <h2 style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">Why Use Peer Mentoring Hub?</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
+                    <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Subject-Specific Mentors</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                        Filter top-scoring senior tutors by specific college courses including DSA, DBMS, Operating
+                        Systems, and Math.
+                    </p>
+                </div>
+                <div class="card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">⏱️</div>
+                    <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">30-Minute Focused Slots</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                        Book structured 30-minute doubt-clearing sessions based on real-time tutor availability
+                        calendars.
+                    </p>
+                </div>
+                <div class="card">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">📍</div>
+                    <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Library & Online Venues</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+                        Choose between reserved physical campus library rooms or automated virtual meeting room links.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section
+            style="margin-bottom: 3rem; background: var(--bg-card); padding: 3rem; border-radius: var(--radius-lg); border: var(--glass-border);">
+            <h2 style="font-size: 2rem; text-align: center; margin-bottom: 2rem;">How It Works</h2>
+            <div class="grid-4" style="text-align: center;">
+                <div>
+                    <div
+                        style="width: 50px; height: 50px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 1rem auto; font-size: 1.25rem;">
+                        1</div>
+                    <h4 style="margin-bottom: 0.4rem;">Browse Tutors</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Explore senior tutors by course,
+                        department, and CGPA ratings.</p>
+                </div>
+                <div>
+                    <div
+                        style="width: 50px; height: 50px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 1rem auto; font-size: 1.25rem;">
+                        2</div>
+                    <h4 style="margin-bottom: 0.4rem;">Pick a Slot</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Select an available 30-minute study slot
+                        that fits your schedule.</p>
+                </div>
+                <div>
+                    <div
+                        style="width: 50px; height: 50px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 1rem auto; font-size: 1.25rem;">
+                        3</div>
+                    <h4 style="margin-bottom: 0.4rem;">Attend Session</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Meet at Library Room 4 or join via the
+                        generated online link.</p>
+                </div>
+                <div>
+                    <div
+                        style="width: 50px; height: 50px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; margin: 0 auto 1rem auto; font-size: 1.25rem;">
+                        4</div>
+                    <h4 style="margin-bottom: 0.4rem;">Rate & Review</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Provide 1–5 star rating and feedback to
+                        help other students.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring & Doubt Clearing Hub. Built for College Mini-Project
+            Demonstration.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+
+</html>

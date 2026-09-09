@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Peer Tutors - Peer Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div style="margin-bottom: 2rem;">
+            <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Browse Peer Tutors</h1>
+            <p style="color: var(--text-secondary);">Find high-scoring senior students ready to mentor you in specific courses.</p>
+        </div>
+
+        <!-- Search & Filter Controls Card -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="grid-3">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Search Keyword</label>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by tutor name or subject..." onkeyup="onFilterChange()">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Filter by Subject</label>
+                    <select id="subjectFilter" class="form-control" onchange="onFilterChange()">
+                        <option value="">All Subjects</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">Filter by Department</label>
+                    <select id="departmentFilter" class="form-control" onchange="onFilterChange()">
+                        <option value="">All Departments</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tutor Cards Grid Container -->
+        <div id="tutorsContainer" class="grid-3">
+            <!-- Dynamically populated by tutors.js -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/tutors.js"></script>
+    <script src="js/booking.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadSubjectDropdown("subjectFilter");
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialSubject = urlParams.get("subject") || "";
+            if (initialSubject) {
+                document.getElementById("subjectFilter").value = initialSubject;
+            }
+            
+            await triggerSearch();
+        });
+
+        let searchTimeout = null;
+        function onFilterChange() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(triggerSearch, 300);
+        }
+
+        async function triggerSearch() {
+            const search = document.getElementById("searchInput").value.trim();
+            const subject = document.getElementById("subjectFilter").value;
+            const department = document.getElementById("departmentFilter").value;
+            await loadTutors(subject, department, search);
+        }
+    </script>
+</body>
+</html>

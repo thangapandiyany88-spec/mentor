@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Peer-to-Peer Academic Mentoring Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="logo-icon">M</div>
+                <span>MentorHub</span>
+            </a>
+            <ul class="nav-links" id="navLinks"></ul>
+        </div>
+    </nav>
+
+    <main class="container" style="max-width: 440px; margin: 4rem auto;">
+        <div class="card">
+            <h2 style="font-size: 1.75rem; text-align: center; margin-bottom: 0.5rem;">Welcome Back</h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                Enter your college Mail ID and password to log in.
+            </p>
+
+            <div id="loginAlert" class="alert alert-danger" style="display: none;"></div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="email">College Mail ID</label>
+                    <input type="email" id="email" class="form-control" placeholder="e.g. arun@college.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+                    Login
+                </button>
+
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+                    Don't have an account? <a href="register.html">Create Account</a>
+                </p>
+            </form>
+
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: var(--border-color) 1px solid; font-size: 0.8rem; color: var(--text-muted);">
+                <p><strong>Sample Login Credentials (Password: 123456):</strong></p>
+                <p>• Tutor: arun@college.edu | priya@college.edu</p>
+                <p>• Junior: ananya@college.edu | rohan@college.edu</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Peer-to-Peer Academic Mentoring Hub</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const alertBox = document.getElementById("loginAlert");
+
+            try {
+                const user = await apiRequest("/auth/login", "POST", { email, password });
+                setCurrentUser(user);
+
+                if (user.role === "TUTOR") {
+                    window.location.href = "tutor-dashboard.html";
+                } else {
+                    window.location.href = "junior-dashboard.html";
+                }
+            } catch (error) {
+                alertBox.innerText = error.message;
+                alertBox.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
